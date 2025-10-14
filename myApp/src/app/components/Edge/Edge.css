@@ -1,0 +1,15 @@
+.custom_edge_icon_cross {
+  fill: #ff0000;
+
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+.custom_edge_button {
+  background-color: transparent;
+  border: 0 !important;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 0;
+}

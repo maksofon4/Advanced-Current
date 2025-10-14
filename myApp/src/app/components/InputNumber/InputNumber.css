@@ -1,0 +1,15 @@
+:root {
+  --input-number-background: #fff;
+  --input-number-field-background: #e0e0e0;
+}
+
+.input_number {
+  background-color: var(--input-number-background);
+}
+
+.input_number_field {
+  all: unset;
+  padding: 5px 0px;
+  box-sizing: border-box;
+  background-color: var(--input-number-field-background);
+}

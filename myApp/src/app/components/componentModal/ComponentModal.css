@@ -1,0 +1,12 @@
+:root {
+  --componentModal-background: #ffffff;
+}
+
+.componentModal {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  background-color: var(--componentModal-background);
+  z-index: 1000;
+  min-width: 300px;
+}
