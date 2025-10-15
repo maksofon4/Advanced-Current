@@ -1,6 +1,6 @@
 import { Handle, Position, useNodeId, useStore } from "@xyflow/react";
-import { useRef } from "react";
 import "./Handle.css";
+import { useEffect } from "react";
 
 export function HandleCustom({ position, type }) {
   const nodeId = useNodeId();

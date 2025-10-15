@@ -1,18 +1,17 @@
 import React from "react";
+import "./DeleteComponentButton.css";
 
 interface DeleteComponentButtonProps {
-  onClick: () => void;
+  onClick: (e: React.MouseEvent) => void;
 }
 
-const DeleteComponentButton: React.FC<DeleteComponentButtonProps> = ({
+export const DeleteComponentButton: React.FC<DeleteComponentButtonProps> = ({
   onClick,
 }) => {
   return (
-    <button onClick={onClick}>
+    <button className="delete_component_button" onClick={onClick}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
         fill="currentColor"
         className="custom_edge_icon_cross"
         viewBox="0 1 16 14"

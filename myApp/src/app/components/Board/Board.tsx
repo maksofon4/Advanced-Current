@@ -11,21 +11,35 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import ResistorComponent from "../electronicComponents/Resistor/resistor";
+import { PowerSourceComponent } from "../electronicComponents/PowerSource/PowerSource";
 import { CustomEdge } from "../Edge/Edge";
 import { ConnectionLineType } from "@xyflow/react";
 import ComponentList from "../componentsList/list";
 
-const initialNodes = [];
+const initialNodes: any[] = [];
 
-const initialEdges = [];
-
-const nodeTypes = {
-  resistor: ResistorComponent,
-};
+const initialEdges: any[] = [];
 
 const edgeTypes = {
   "custom-edge": CustomEdge,
 };
+
+const createNodeTypes = (onDeleteNode?: (nodeId: string) => void) => ({
+  resistor: (props: any) => (
+    <ResistorComponent
+      {...props}
+      onDelete={onDeleteNode ? () => onDeleteNode(props.id) : undefined}
+    />
+  ),
+  powerSource: (props: any) => (
+    <PowerSourceComponent
+      {...props}
+      onDelete={onDeleteNode ? () => onDeleteNode(props.id) : undefined}
+    />
+  ),
+});
+
+let nodeTypes = createNodeTypes();
 
 const Board: React.FC = () => {
   const [nodes, setNodes] = useState(initialNodes);
@@ -49,7 +63,6 @@ const Board: React.FC = () => {
       y: event.clientY,
     });
 
-    console.log(position);
     const newNode = {
       id: `${Date.now()}`,
       type: nodeType,
@@ -82,6 +95,19 @@ const Board: React.FC = () => {
       ),
     []
   );
+
+  const onDeleteNode = useCallback((nodeId: string) => {
+    setNodes((nds) => nds.filter((node) => node.id !== nodeId));
+
+    // Also remove any edges connected to this node
+    setEdges((eds) =>
+      eds.filter((edge) => edge.source !== nodeId && edge.target !== nodeId)
+    );
+  }, []);
+
+  useState(() => {
+    nodeTypes = createNodeTypes(onDeleteNode);
+  });
 
   return (
     <div

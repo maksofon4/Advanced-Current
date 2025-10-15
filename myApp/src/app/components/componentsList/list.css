@@ -19,9 +19,13 @@
   object-fit: cover;
 }
 
-.component_name {
+/* .component_name {
   position: absolute;
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
+} */
+
+.component_name::first-letter {
+  text-transform: uppercase;
 }
