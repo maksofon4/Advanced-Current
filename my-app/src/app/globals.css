@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme {
+  --color-component: #a9a9a9;
+}
+
+.resistor_model {
+  @apply w-[100px] h-[100px] cursor-pointer flex items-center justify-between bg-component;
+}
+
+/* Thermometer */
+
+.thermometer {
+  @apply flex items-center gap-3 mx-auto absolute right-1 top-1 z-[100] bg-white p-2 rounded-full shadow-md;
+}
+
+.thermometer_value {
+  @apply text-[25px] px-1;
+}
+
+.thermometer_controllers {
+  @apply flex gap-1 text-white;
+}
+
+/* component modal win */
+
+.component_modal_header {
+  @apply flex flex-row justify-between;
+}
+
+/* abstract */
+
+.button_normal {
+  @apply shadow-md py-1 px-3 rounded-lg cursor-pointer;
+}
+
+.button_normal_blue {
+  @apply bg-blue-400 text-white;
+}
+
+.component_model_img {
+  @apply object-cover w-full h-full;
+}
+
+.input_field {
+  @apply bg-zinc-300 p-[5px] w-full rounded-sm mb-3;
+}
+
+.input_name {
+  @apply mb-2;
+}

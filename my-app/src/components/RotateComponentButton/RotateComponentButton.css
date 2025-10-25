@@ -1,0 +1,21 @@
+.rotate_component_button {
+  all: unset;
+  background-color: rgb(225, 225, 225);
+  width: 20px;
+  height: 20px;
+  padding: 3px;
+  border-radius: 50%;
+  position: absolute;
+  top: -30px;
+  right: -30px;
+}
+
+.rotate_component_button svg {
+  fill: #fff;
+  width: 20px;
+  height: 20px;
+}
+
+.rotate_component_button:hover {
+  background-color: blue;
+}
