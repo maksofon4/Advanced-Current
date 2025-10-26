@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode, useEffect, useState, useMemo } from "react";
+import { ReactNode, useEffect, useState, useMemo, useCallback } from "react";
 import React from "react";
 import ComponentModal from "../../../components/componentModal/ComponentModal";
 import InputNumber from "../../../components/InputNumber/InputNumber";
@@ -11,36 +11,42 @@ import { DeleteComponentButton } from "../../../components/DeleteComponentButton
 import { RotateComponentButton } from "../../../components/RotateComponentButton/RotateComponentButton";
 import { useUpdateNodeInternals } from "@xyflow/react";
 import { useUpdateNodeData } from "@/app/Hooks/ReactFlow/UseUpdateNodeData/UseUpdateNodeData";
-import "./resistor.css";
 
 interface ResistorComponentProps {
   id: string;
-  temperature: number;
+  data: {
+    angle: number;
+    temperature: number;
+    resistance?: number;
+    voltage?: number;
+    power?: number;
+    outputCurrent?: number;
+  };
   onDelete: () => void;
 }
 
 const ResistorComponent: React.FC<ResistorComponentProps> = ({
   id,
-  temperature,
+  data,
   onDelete,
 }) => {
-  const [voltage, setVoltage] = useState<number>(0);
-  const [tcr, setTcr] = useState<number>(0);
-  const [T_nominal, setT_nominal] = useState<number>(25); //nominal temperture in celsius
-  const [resistance, setResistance] = useState<number>(25); // nominal resistance in Oms
-  const [actualResistance, setActualResistance] = useState<number>(resistance);
+  const { angle, temperature = 0, resistance = 0, voltage = 0 } = data; //prevents undefined in component the values are sensible
+
+  const [actualResistance, setActualResistance] = useState<number>(
+    resistance || 0
+  );
   const [outputCurrent, setoutputCurrent] = useState<number>(0);
-  const [outputVoltage, setOutputVoltage] = useState<number>(voltage || 0);
+  const [outputVoltage, setOutputVoltage] = useState<number>(0);
   const [power, setPower] = useState<number>(0);
 
   // hovered state
   const [isHovered, setIsHovered] = useState(false);
 
-  // Rotation states
-  const [angle, setAngle] = useState<number>(0);
-
   // Resistor Class
-  const resistor = new Resistor(temperature, voltage, resistance);
+  const resistor = useMemo(
+    () => new Resistor(temperature, voltage, resistance),
+    [temperature, voltage, resistance] // Recreate when these change
+  );
 
   // Modal
   const [isModalOpened, setIsModalopened] = useState<boolean>(false);
@@ -72,46 +78,50 @@ const ResistorComponent: React.FC<ResistorComponentProps> = ({
   const updateNodeData = useUpdateNodeData();
 
   const updateVoltage = (voltage: number) => {
-    setVoltage(voltage);
     updateNodeData(id, {
       voltage,
     });
   };
 
   const updateResistance = (resistance: number) => {
-    setResistance(resistance);
     updateNodeData(id, {
       resistance,
     });
   };
 
-  useEffect(() => {
-    calculateData();
-  }, [resistance, temperature, voltage]);
-
-  const handleRotate = (rotation: number) => {
-    setAngle(rotation);
+  const updateAngle = (angle: number) => {
+    updateNodeData(id, {
+      angle,
+    });
   };
 
-  const calculateData = () => {
+  // Calculate data function
+  const calculateData = useCallback(() => {
     const resistanceActual = resistor.getResistance();
     const calculatedOutputCurrent = resistor.getCurrent();
     const calculatedOutputVoltage = resistor.getVoltage();
     const power = calculatedOutputVoltage * calculatedOutputCurrent;
+
     updateNodeData(id, {
       power,
-      outputCurrent,
+      outputCurrent: calculatedOutputCurrent,
+      actualResistance: resistanceActual,
+      outputVoltage: calculatedOutputVoltage,
     });
 
     setActualResistance(resistanceActual);
     setoutputCurrent(calculatedOutputCurrent);
     setOutputVoltage(calculatedOutputVoltage);
     setPower(power);
-  };
+  }, [resistor, id, updateNodeData]);
+
+  useEffect(() => {
+    calculateData();
+  }, [resistance, temperature, voltage]);
 
   return (
     <>
-      <RotateComponentButton onRotate={handleRotate} />
+      <RotateComponentButton onRotate={updateAngle} />
       <ComponentModal
         isOpened={isModalOpened}
         onClose={() => setIsModalopened(false)}
@@ -133,9 +143,9 @@ const ResistorComponent: React.FC<ResistorComponentProps> = ({
           <p>resistance: {actualResistance}</p>
         </ComponentInfo>
         <ComponentInfo type="output">
-          <p>Current: {outputCurrent.toFixed(5)} A</p>
-          <p>Voltage: {outputVoltage.toFixed(2)} V</p>
-          <p>Power Dissipated: {power.toFixed(5)} W</p>
+          <p>Current: {outputCurrent ? outputCurrent.toFixed(5) : 0} A</p>
+          <p>Voltage: {outputVoltage ? outputVoltage.toFixed(2) : 0} V</p>
+          <p>Power Dissipated: {power ? power.toFixed(5) : 0} W</p>
         </ComponentInfo>
       </ComponentModal>
       <div

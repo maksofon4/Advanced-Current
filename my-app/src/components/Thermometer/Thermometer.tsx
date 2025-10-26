@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import React from "react";
 
 interface ThermometerProps {
@@ -37,22 +37,6 @@ const Thermometer: React.FC<ThermometerProps> = ({ onTemperatureChange }) => {
     }
   };
 
-  const increaseTemperature = () => {
-    setTemperature((prev) => {
-      const newValue = Math.min(prev + 1, 1000);
-      onTemperatureChange(newValue);
-      return newValue;
-    });
-  };
-
-  const decreaseTemperature = () => {
-    setTemperature((prev) => {
-      const newValue = Math.max(prev - 1, -273);
-      onTemperatureChange(newValue);
-      return newValue;
-    });
-  };
-
   const startIncrease = () => {
     increaseTemperature(); // immediate increment
     intervalRef.current = setInterval(increaseTemperature, 50); // repeat while holding
@@ -68,6 +52,18 @@ const Thermometer: React.FC<ThermometerProps> = ({ onTemperatureChange }) => {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
+  };
+
+  useEffect(() => {
+    onTemperatureChange(temperature);
+  }, [temperature, onTemperatureChange]);
+
+  const increaseTemperature = () => {
+    setTemperature((prev) => Math.min(prev + 1, 1000));
+  };
+
+  const decreaseTemperature = () => {
+    setTemperature((prev) => Math.max(prev - 1, -273));
   };
 
   const color = getTemperatureColor(temperature);

@@ -4,29 +4,25 @@ import { componentNames } from "./componentNames";
 
 export class PowerSource extends Component {
   private voltage: number;
-  private resistance: number;
-  private current: number;
 
-  constructor(voltage: number, resistance: number, current: number) {
+  constructor(voltage: number = 0) {
     super(componentNames.POWERSOURCE, skins.POWERSOURCE);
-    this.voltage = voltage; // in volts
-    this.resistance = resistance; // in ohms
-    this.current = current;
+    this.voltage = voltage;
   }
 
-  getResistance() {
-    return this.resistance;
-  }
-
-  getVoltage() {
+  getVoltage(): number {
     return this.voltage;
   }
 
-  getCurrent() {
-    return this.current;
+  getCurrent(): number {
+    return 0; // Power sources don't "have" current, they provide voltage
   }
 
-  getPower() {
-    return this.voltage * this.current;
+  getResistance(): number {
+    return 0; // Ideal power source has zero internal resistance
+  }
+
+  getPower(): number {
+    return 0; // Power sources supply power, don't consume it
   }
 }

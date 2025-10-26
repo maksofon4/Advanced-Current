@@ -33,13 +33,14 @@ const createNodeTypes = (
   resistor: (props: any) => (
     <ResistorComponent
       {...props}
-      temperature={temperature ? temperature : 25}
+      data={{ ...props.data, temperature: temperature ?? 25 }}
       onDelete={onDeleteNode ? () => onDeleteNode(props.id) : undefined}
     />
   ),
   powerSource: (props: any) => (
     <PowerSourceComponent
       {...props}
+      data={{ ...props.data, temperature: temperature ?? 25 }}
       onDelete={onDeleteNode ? () => onDeleteNode(props.id) : undefined}
     />
   ),
@@ -79,6 +80,10 @@ const Board: React.FC = () => {
 
     setNodes((nds) => nds.concat(newNode));
   };
+
+  useEffect(() => {
+    console.log(nodes);
+  }, [nodes]);
 
   // Default React flow
 

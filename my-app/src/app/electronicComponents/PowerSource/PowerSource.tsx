@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { ReactNode, useEffect, useState, useMemo, useCallback } from "react";
 import { DeleteComponentButton } from "../../../components/DeleteComponentButton/DeleteComponentButton";
 import ComponentModal from "../../../components/componentModal/ComponentModal";
 import InputNumber from "../../../components/InputNumber/InputNumber";
@@ -8,26 +8,35 @@ import { Position } from "@xyflow/react";
 import { HandleCustom } from "../../../components/Handle/Handle";
 import { RotateComponentButton } from "../../../components/RotateComponentButton/RotateComponentButton";
 import { useUpdateNodeInternals } from "@xyflow/react";
+import { useUpdateNodeData } from "@/app/Hooks/ReactFlow/UseUpdateNodeData/UseUpdateNodeData";
 
 interface PowerSourceProps {
   id: string;
+  data: {
+    angle: number;
+    temperature: number;
+    resistance?: number;
+    voltage?: number;
+    power?: number;
+    outputCurrent?: number;
+  };
   onDelete: () => void;
 }
 
 export const PowerSourceComponent: React.FC<PowerSourceProps> = ({
   id,
+  data,
   onDelete,
 }) => {
+  const { angle, temperature = 0, resistance = 0, voltage = 0 } = data;
+
   const [isModalOpened, setIsModalopened] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [resistance, setResistance] = useState<number>(0);
-  const [voltage, setVoltage] = useState<number>(0);
-  const [current, setCurrent] = useState<number>(0);
 
-  const powerSource = new PowerSource(voltage, resistance, current);
-
-  // Rotation states
-  const [angle, setAngle] = useState<number>(0);
+  const powerSource = useMemo(
+    () => new PowerSource(voltage),
+    [temperature, voltage, resistance]
+  );
 
   // Handles positioning
   const updateNodeInternals = useUpdateNodeInternals();
@@ -51,13 +60,29 @@ export const PowerSourceComponent: React.FC<PowerSourceProps> = ({
     updateNodeInternals(id);
   }, [handlePositions, id, updateNodeInternals]);
 
-  const handleRotate = (rotation: number) => {
-    setAngle(rotation);
+  const updateNodeData = useUpdateNodeData();
+
+  const updateVoltage = (voltage: number) => {
+    updateNodeData(id, {
+      voltage,
+    });
+  };
+
+  const updateResistance = (resistance: number) => {
+    updateNodeData(id, {
+      resistance,
+    });
+  };
+
+  const updateAngle = (angle: number) => {
+    updateNodeData(id, {
+      angle,
+    });
   };
 
   return (
     <>
-      <RotateComponentButton onRotate={handleRotate} />
+      <RotateComponentButton onRotate={updateAngle} />
       <div
         className="resistor_model position-relative cursor-pointer p-1 rounded-1"
         onClick={(e) => {
@@ -88,12 +113,12 @@ export const PowerSourceComponent: React.FC<PowerSourceProps> = ({
           <InputNumber
             value={resistance}
             inputName="Resistance"
-            onChange={(value) => setResistance(value)}
+            onChange={updateResistance}
           />
           <InputNumber
             value={voltage}
             inputName="Input Voltage"
-            onChange={(value) => setVoltage(value)}
+            onChange={updateVoltage}
           />
 
           <ComponentInfo type="output">
