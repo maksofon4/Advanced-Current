@@ -11,8 +11,8 @@ import {
   ConnectionMode,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import ResistorComponent from "../../app/electronicComponents/Resistor/resistor";
-import { PowerSourceComponent } from "../../app/electronicComponents/PowerSource/PowerSource";
+import ResistorComponent from "../../electronicComponents/Resistor/resistor";
+import { PowerSourceComponent } from "../../electronicComponents/PowerSource/PowerSource";
 import { CustomEdge } from "../Edge/Edge";
 import { ConnectionLineType } from "@xyflow/react";
 import ComponentList from "../componentsList/list";
@@ -80,10 +80,6 @@ const Board: React.FC = () => {
 
     setNodes((nds) => nds.concat(newNode));
   };
-
-  useEffect(() => {
-    console.log(nodes);
-  }, [nodes]);
 
   // Default React flow
 

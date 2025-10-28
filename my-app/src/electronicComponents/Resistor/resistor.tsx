@@ -1,16 +1,16 @@
 "use client";
 import { ReactNode, useEffect, useState, useMemo, useCallback } from "react";
 import React from "react";
-import ComponentModal from "../../../components/componentModal/ComponentModal";
-import InputNumber from "../../../components/InputNumber/InputNumber";
+import ComponentModal from "../../components/componentModal/ComponentModal";
+import InputNumber from "../../components/InputNumber/InputNumber";
 import { Resistor } from "@/models/Resistor";
-import { HandleCustom } from "../../../components/Handle/Handle";
+import { HandleCustom } from "../../components/Handle/Handle";
 import { Position } from "@xyflow/react";
-import { ComponentInfo } from "../../../components/ComponentInfo/ComponentInfo";
-import { DeleteComponentButton } from "../../../components/DeleteComponentButton/DeleteComponentButton";
-import { RotateComponentButton } from "../../../components/RotateComponentButton/RotateComponentButton";
+import { ComponentInfo } from "../../components/ComponentInfo/ComponentInfo";
+import { DeleteComponentButton } from "../../components/DeleteComponentButton/DeleteComponentButton";
+import { RotateComponentButton } from "../../components/RotateComponentButton/RotateComponentButton";
 import { useUpdateNodeInternals } from "@xyflow/react";
-import { useUpdateNodeData } from "@/app/Hooks/ReactFlow/UseUpdateNodeData/UseUpdateNodeData";
+import { useUpdateNodeData } from "@/UseUpdateNodeData/UseUpdateNodeData";
 
 interface ResistorComponentProps {
   id: string;

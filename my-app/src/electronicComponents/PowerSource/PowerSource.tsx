@@ -1,24 +1,23 @@
 import { ReactNode, useEffect, useState, useMemo, useCallback } from "react";
-import { DeleteComponentButton } from "../../../components/DeleteComponentButton/DeleteComponentButton";
-import ComponentModal from "../../../components/componentModal/ComponentModal";
-import InputNumber from "../../../components/InputNumber/InputNumber";
+import { DeleteComponentButton } from "../../components/DeleteComponentButton/DeleteComponentButton";
+import ComponentModal from "../../components/componentModal/ComponentModal";
+import InputNumber from "../../components/InputNumber/InputNumber";
 import { PowerSource } from "@/models/PowerSource";
-import { ComponentInfo } from "../../../components/ComponentInfo/ComponentInfo";
+import { ComponentInfo } from "../../components/ComponentInfo/ComponentInfo";
 import { Position } from "@xyflow/react";
-import { HandleCustom } from "../../../components/Handle/Handle";
-import { RotateComponentButton } from "../../../components/RotateComponentButton/RotateComponentButton";
+import { HandleCustom } from "../../components/Handle/Handle";
+import { RotateComponentButton } from "../../components/RotateComponentButton/RotateComponentButton";
 import { useUpdateNodeInternals } from "@xyflow/react";
-import { useUpdateNodeData } from "@/app/Hooks/ReactFlow/UseUpdateNodeData/UseUpdateNodeData";
+import { useUpdateNodeData } from "@/UseUpdateNodeData/UseUpdateNodeData";
 
 interface PowerSourceProps {
   id: string;
   data: {
     angle: number;
     temperature: number;
-    resistance?: number;
-    voltage?: number;
-    power?: number;
-    outputCurrent?: number;
+    nominalVoltage: number;
+    internalResistance: number;
+    circuitlResistance: number;
   };
   onDelete: () => void;
 }
@@ -28,14 +27,26 @@ export const PowerSourceComponent: React.FC<PowerSourceProps> = ({
   data,
   onDelete,
 }) => {
-  const { angle, temperature = 0, resistance = 0, voltage = 0 } = data;
+  const {
+    angle,
+    nominalVoltage = 0,
+    internalResistance = 0,
+    circuitlResistance = 0,
+    temperature = 0,
+  } = data;
 
   const [isModalOpened, setIsModalopened] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   const powerSource = useMemo(
-    () => new PowerSource(voltage),
-    [temperature, voltage, resistance]
+    () =>
+      new PowerSource(
+        nominalVoltage,
+        internalResistance,
+        circuitlResistance,
+        temperature
+      ),
+    [nominalVoltage, internalResistance, circuitlResistance, temperature]
   );
 
   // Handles positioning
@@ -62,15 +73,21 @@ export const PowerSourceComponent: React.FC<PowerSourceProps> = ({
 
   const updateNodeData = useUpdateNodeData();
 
-  const updateVoltage = (voltage: number) => {
+  const updateNominalVoltage = (nominalVoltage: number) => {
     updateNodeData(id, {
-      voltage,
+      nominalVoltage,
     });
   };
 
-  const updateResistance = (resistance: number) => {
+  const updateInternalResistance = (internalResistance: number) => {
     updateNodeData(id, {
-      resistance,
+      internalResistance,
+    });
+  };
+
+  const updateCircuitlResistance = (circuitlResistance: number) => {
+    updateNodeData(id, {
+      circuitlResistance,
     });
   };
 
@@ -111,21 +128,27 @@ export const PowerSourceComponent: React.FC<PowerSourceProps> = ({
           componentName="Power Source"
         >
           <InputNumber
-            value={resistance}
-            inputName="Resistance"
-            onChange={updateResistance}
+            value={circuitlResistance}
+            inputName="Circuit Resistance"
+            onChange={updateCircuitlResistance}
           />
           <InputNumber
-            value={voltage}
-            inputName="Input Voltage"
-            onChange={updateVoltage}
+            value={internalResistance}
+            inputName="Internal Battery Resistance"
+            onChange={updateInternalResistance}
           />
-
+          <InputNumber
+            value={nominalVoltage}
+            inputName="Nominal Voltage"
+            onChange={updateNominalVoltage}
+          />
+          <ComponentInfo type="input">
+            <p>temperature: {temperature}</p>
+          </ComponentInfo>
           <ComponentInfo type="output">
-            <p>Current (Calculated): {current.toFixed(5)} A</p>
-            <p>Voltage (Fixed Input): {current.toFixed(2)} V</p>
-            <p>Power Dissipated: {powerSource.getPower().toFixed(5)} W</p>
-            <p>actual resistance{powerSource.getResistance()}</p>
+            <p>Current: {powerSource.getOutputCurrent().toFixed(5)} A</p>
+            <p>Voltage: {powerSource.getOutputVoltage().toFixed(2)} V</p>
+            <p>Power: {powerSource.getPowerOutput().toFixed(5)} W</p>
           </ComponentInfo>
         </ComponentModal>
         <HandleCustom type="target" position={handlePositions.handle1} />

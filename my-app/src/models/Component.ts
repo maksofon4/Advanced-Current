@@ -6,6 +6,4 @@ export abstract class Component {
     this.name = name;
     this.skin = skin;
   }
-
-  abstract getResistance(): number;
 }

@@ -1,6 +1,6 @@
 "use client";
 import { useState, useCallback } from "react";
-import Board from "../../components/Board/Board";
+import Board from "../../../components/Board/Board";
 import { ReactFlowProvider } from "@xyflow/react";
 
 const Home = () => {

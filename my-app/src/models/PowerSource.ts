@@ -3,26 +3,90 @@ import { skins } from "./skins";
 import { componentNames } from "./componentNames";
 
 export class PowerSource extends Component {
-  private voltage: number;
+  private nominalVoltage: number;
+  private internalResistance: number;
+  private circuitResistance: number;
+  private temperature: number;
 
-  constructor(voltage: number = 0) {
+  // Calculated values
+  private outputVoltage: number;
+  private outputCurrent: number;
+  private powerOutput: number;
+  private effectiveInternalResistance: number;
+
+  constructor(
+    nominalVoltage: number,
+    internalResistance: number,
+    circuitResistance: number,
+    temperature: number
+  ) {
     super(componentNames.POWERSOURCE, skins.POWERSOURCE);
-    this.voltage = voltage;
+    this.nominalVoltage = nominalVoltage;
+    this.internalResistance = internalResistance;
+    this.circuitResistance = circuitResistance;
+    this.temperature = temperature;
+
+    // Calculate everything once in constructor
+    this.effectiveInternalResistance =
+      this.calculateEffectiveInternalResistance();
+    this.outputCurrent = this.calculateOutputCurrent();
+    this.outputVoltage = this.calculateOutputVoltage();
+    this.powerOutput = this.calculatePowerOutput();
   }
 
-  getVoltage(): number {
-    return this.voltage;
+  private calculateEffectiveInternalResistance(): number {
+    // Temperature effect on internal resistance
+    const alpha = 0.0039;
+    const baseTemp = 25;
+    return (
+      this.internalResistance * (1 + alpha * (this.temperature - baseTemp))
+    );
   }
 
-  getCurrent(): number {
-    return 0; // Power sources don't "have" current, they provide voltage
+  private calculateOutputCurrent(): number {
+    const totalResistance =
+      this.effectiveInternalResistance + this.circuitResistance;
+    return totalResistance > 0 ? this.nominalVoltage / totalResistance : 0;
   }
 
-  getResistance(): number {
-    return 0; // Ideal power source has zero internal resistance
+  private calculateOutputVoltage(): number {
+    return (
+      this.nominalVoltage -
+      this.outputCurrent * this.effectiveInternalResistance
+    );
   }
 
-  getPower(): number {
-    return 0; // Power sources supply power, don't consume it
+  private calculatePowerOutput(): number {
+    return this.outputVoltage * this.outputCurrent;
+  }
+
+  // Simple getters - just return pre-calculated values
+  getOutputVoltage(): number {
+    return this.outputVoltage;
+  }
+
+  getOutputCurrent(): number {
+    return this.outputCurrent;
+  }
+
+  getInternalResistance(): number {
+    return this.effectiveInternalResistance;
+  }
+
+  getPowerOutput(): number {
+    return this.powerOutput;
+  }
+
+  // Optional: get the original values for display
+  getNominalVoltage(): number {
+    return this.nominalVoltage;
+  }
+
+  getcircuitResistance(): number {
+    return this.circuitResistance;
+  }
+
+  getTemperature(): number {
+    return this.temperature;
   }
 }
