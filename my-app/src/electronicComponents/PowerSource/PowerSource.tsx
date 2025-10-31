@@ -8,7 +8,7 @@ import { Position } from "@xyflow/react";
 import { HandleCustom } from "../../components/Handle/Handle";
 import { RotateComponentButton } from "../../components/RotateComponentButton/RotateComponentButton";
 import { useUpdateNodeInternals } from "@xyflow/react";
-import { useUpdateNodeData } from "@/UseUpdateNodeData/UseUpdateNodeData";
+import { useUpdateNodeData } from "@/Hooks/ReactFlow/UseUpdateNodeData/UseUpdateNodeData";
 
 interface PowerSourceProps {
   id: string;
@@ -101,7 +101,7 @@ export const PowerSourceComponent: React.FC<PowerSourceProps> = ({
     <>
       <RotateComponentButton onRotate={updateAngle} />
       <div
-        className="resistor_model position-relative cursor-pointer p-1 rounded-1"
+        className="component_model position-relative cursor-pointer p-1 rounded-1"
         onClick={(e) => {
           setIsModalopened(true);
           e.stopPropagation();

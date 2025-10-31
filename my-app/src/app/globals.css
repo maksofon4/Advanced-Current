@@ -4,7 +4,55 @@
   --color-component: #a9a9a9;
 }
 
-.resistor_model {
+/* Main Page */
+
+.main_page {
+  @apply w-screen;
+}
+
+.img-background {
+  background: linear-gradient(
+      rgba(0, 173, 40, 0.7),
+      /* Black with 50% opacity */ rgba(0, 173, 40, 0.7)
+    ),
+    url("/images/schemaCustom.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.screen-header-h-sum {
+  height: calc(100vh - 70px);
+}
+
+.main_page_buttons {
+  @apply h-full w-full text-lg  flex items-center justify-center gap-3;
+}
+
+/* Header */
+
+.header {
+  @apply w-full shadow-md;
+}
+
+.header_logo {
+  @apply col-span-1 mx-auto;
+}
+
+.header_container {
+  @apply grid grid-cols-3 py-[15px];
+}
+
+.header_links {
+  @apply flex gap-5 col-span-1 items-center justify-center;
+}
+
+.header_auth {
+  @apply flex gap-3 items-center col-span-1 justify-center;
+}
+
+/* Electric Component */
+
+.component_model {
   @apply w-[100px] h-[100px] cursor-pointer flex items-center justify-between bg-component;
 }
 

@@ -10,7 +10,7 @@ import { ComponentInfo } from "../../components/ComponentInfo/ComponentInfo";
 import { DeleteComponentButton } from "../../components/DeleteComponentButton/DeleteComponentButton";
 import { RotateComponentButton } from "../../components/RotateComponentButton/RotateComponentButton";
 import { useUpdateNodeInternals } from "@xyflow/react";
-import { useUpdateNodeData } from "@/UseUpdateNodeData/UseUpdateNodeData";
+import { useUpdateNodeData } from "@/Hooks/ReactFlow/UseUpdateNodeData/UseUpdateNodeData";
 
 interface ResistorComponentProps {
   id: string;
@@ -149,7 +149,7 @@ const ResistorComponent: React.FC<ResistorComponentProps> = ({
         </ComponentInfo>
       </ComponentModal>
       <div
-        className="resistor_model position-relative cursor-pointer p-1 rounded-1"
+        className="component_model position-relative cursor-pointer p-1 rounded-1"
         onClick={(e) => {
           setIsModalopened(true);
           e.stopPropagation();
