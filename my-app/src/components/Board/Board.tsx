@@ -17,6 +17,7 @@ import { CustomEdge } from "../Edge/Edge";
 import { ConnectionLineType } from "@xyflow/react";
 import ComponentList from "../componentsList/list";
 import Thermometer from "../Thermometer/Thermometer";
+import SaveSchemaButton from "../SaveSchemaButton/SaveSchemaButton";
 
 const initialNodes: any[] = [];
 
@@ -126,6 +127,7 @@ const Board: React.FC = () => {
       <ComponentList />
 
       <ReactFlow
+        className="react_flow_app"
         style={{ background: "#fff" }}
         nodes={nodes}
         edges={edges}
@@ -137,6 +139,7 @@ const Board: React.FC = () => {
         connectionLineStyle={{ stroke: "blue", strokeWidth: 2 }}
         connectionLineType={ConnectionLineType.Straight}
       >
+        <SaveSchemaButton />
         <Thermometer onTemperatureChange={(value) => setTemperature(value)} />
         <Background variant={BackgroundVariant.Lines} />
       </ReactFlow>

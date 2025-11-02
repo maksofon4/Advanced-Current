@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { auth, signOut, signIn } from "../../../auth";
+import { auth, signOut, signIn } from "../../../lib/auth";
 import Link from "next/link";
 import { redirect } from "next/dist/server/api-utils";
 

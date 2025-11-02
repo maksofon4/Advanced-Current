@@ -50,10 +50,46 @@
   @apply flex gap-3 items-center col-span-1 justify-center;
 }
 
+/* component list */
+
+.components_list {
+  @apply transition-transform duration-300 ease-in-out bg-blue-200 fixed w-full top-0 left-0 flex gap-x-3 p-3 z-[200] -translate-y-[100%];
+}
+
+.components_list_show {
+  @apply translate-y-[0px]!;
+}
+
+.components_list_component {
+  @apply w-[100px] h-[100px] bg-blue-400 cursor-pointer;
+}
+
+.components_list_img {
+  @apply w-full h-full object-cover;
+}
+
+.component_list_component_name::first-letter {
+  @apply uppercase;
+}
+
+.components_list_button_show {
+  @apply absolute top-[calc(100%+5px)] left-1;
+}
+
+.components_list_button {
+  @apply flex items-center gap-1;
+}
+
 /* Electric Component */
 
 .component_model {
   @apply w-[100px] h-[100px] cursor-pointer flex items-center justify-between bg-component;
+}
+
+/* Save schema button */
+
+.save_schema_button_container {
+  @apply absolute bottom-1 right-1 z-100;
 }
 
 /* Thermometer */
