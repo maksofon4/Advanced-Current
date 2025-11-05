@@ -10,9 +10,9 @@ const Header: React.FC = async () => {
     <header className="header">
       <nav className="header_nav">
         <div className="header_container">
-          <a href="" className="header_logo">
+          <Link href="" className="header_logo">
             <Image width={40} height={40} alt="logo" src="/images/logo.png" />
-          </a>
+          </Link>
 
           <ul className="header_links">
             <li>

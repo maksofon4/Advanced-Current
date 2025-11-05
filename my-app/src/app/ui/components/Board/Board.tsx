@@ -8,7 +8,6 @@ import {
   addEdge,
   BackgroundVariant,
   useReactFlow,
-  ConnectionMode,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import ResistorComponent from "../../electronicComponents/Resistor/resistor";
@@ -18,6 +17,7 @@ import { ConnectionLineType } from "@xyflow/react";
 import ComponentList from "../componentsList/list";
 import Thermometer from "../Thermometer/Thermometer";
 import SaveSchemaButton from "../SaveSchemaButton/SaveSchemaButton";
+import ButtonsBox from "../ButtonsBox/ButtonsBox";
 
 const initialNodes: any[] = [];
 
@@ -139,8 +139,10 @@ const Board: React.FC = () => {
         connectionLineStyle={{ stroke: "blue", strokeWidth: 2 }}
         connectionLineType={ConnectionLineType.Straight}
       >
-        <SaveSchemaButton />
         <Thermometer onTemperatureChange={(value) => setTemperature(value)} />
+        <ButtonsBox>
+          <SaveSchemaButton />
+        </ButtonsBox>
         <Background variant={BackgroundVariant.Lines} />
       </ReactFlow>
     </div>

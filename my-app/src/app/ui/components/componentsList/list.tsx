@@ -2,6 +2,8 @@
 import React from "react";
 import { useState } from "react";
 import { skins } from "@/models/skins";
+import ToolTip, { ToolTipPositions } from "../ToolTip/ToolTip";
+import Image from "next/image";
 
 const components = [
   { id: "22344", type: "powerSource", image: skins.POWERSOURCE },
@@ -10,6 +12,7 @@ const components = [
 
 const ComponentList: React.FC = () => {
   const [showList, setShowList] = useState<boolean>(false);
+  const [isToolTipVisible, setToolTipVisible] = useState<boolean>(false);
 
   const onDragStart = (event: React.DragEvent, nodeType: string) => {
     event.dataTransfer.setData("nodeType", nodeType);
@@ -23,6 +26,8 @@ const ComponentList: React.FC = () => {
       setShowList(true);
     }
   };
+
+  console.log(components);
 
   return (
     <div
@@ -39,8 +44,10 @@ const ComponentList: React.FC = () => {
             onDragStart={(e) => onDragStart(e, component.type)}
             draggable
           >
-            <img
+            <Image
               className="components_list_img"
+              width={100}
+              height={100}
               src={component.image}
               alt={component.type}
             />
@@ -49,9 +56,17 @@ const ComponentList: React.FC = () => {
       ))}
 
       <button
-        className="button_normal components_list_button_show button_normal_blue components_list_button"
+        className="button_normal relative components_list_button_show button_normal_blue components_list_button"
         onClick={showListFunction}
+        onMouseEnter={() => setToolTipVisible(true)}
+        onMouseLeave={() => setToolTipVisible(false)}
       >
+        {isToolTipVisible && !showList && (
+          <ToolTip position={ToolTipPositions.BOTTOM_RIGHT}>
+            <span className="whitespace-nowrap">Show components</span>
+          </ToolTip>
+        )}
+
         {showList ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +88,7 @@ const ComponentList: React.FC = () => {
               viewBox="0 0 16 16"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M1 8a7 7 0 1 1 2.898 5.673c-.167-.121-.216-.406-.002-.62l1.8-1.8a3.5 3.5 0 0 0 4.572-.328l1.414-1.415a.5.5 0 0 0 0-.707l-.707-.707 1.559-1.563a.5.5 0 1 0-.708-.706l-1.559 1.562-1.414-1.414 1.56-1.562a.5.5 0 1 0-.707-.706l-1.56 1.56-.707-.706a.5.5 0 0 0-.707 0L5.318 5.975a3.5 3.5 0 0 0-.328 4.571l-1.8 1.8c-.58.58-.62 1.6.121 2.137A8 8 0 1 0 0 8a.5.5 0 0 0 1 0"
               />
             </svg>

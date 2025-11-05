@@ -1,5 +1,5 @@
 "use client";
-import Board from "@/components/Board/Board";
+import Board from "@/app/ui/components/Board/Board";
 import { ReactFlowProvider } from "@xyflow/react";
 
 const Home = () => {

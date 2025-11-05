@@ -86,10 +86,16 @@
   @apply w-[100px] h-[100px] cursor-pointer flex items-center justify-between bg-component;
 }
 
-/* Save schema button */
+/* Tool Tip */
 
-.save_schema_button_container {
-  @apply absolute bottom-1 right-1 z-100;
+.tool_tip {
+  @apply px-1 absolute bg-neutral-800  border-1 border-neutral-400;
+}
+
+/* buttons box for buttons */
+
+.buttons_box {
+  @apply p-2 shadow-md bg-white rounded-xl absolute bottom-1 right-1 z-100;
 }
 
 /* Thermometer */
@@ -115,7 +121,7 @@
 /* abstract */
 
 .button_normal {
-  @apply shadow-md py-1 px-3 rounded-lg cursor-pointer;
+  @apply shadow-md py-1 px-2 rounded-lg cursor-pointer;
 }
 
 .button_normal_blue {
